@@ -15,7 +15,7 @@ function pw($a,$n)
 	if($n > 0){
 		return $a*pw($a, $n-1);
 	}elseif($n < 0){
-		return $a*pw(1/$a, -($n)); // отрицательная степень не решена
+    return 1/pw($a, abs($n));
 	}
 	return 1;
 }
