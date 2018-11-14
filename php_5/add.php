@@ -1,11 +1,6 @@
 <?php 
 session_start();
 include 'cart.php';
-var_dump($_SESSION['cart']);
-var_dump($product);
-
-var_dump($products[$product]);
-// var_dump($product['name']);
 
 ?>
 <!DOCTYPE html>
@@ -16,41 +11,41 @@ var_dump($products[$product]);
 </head>
 <body>
 	<?php
-	get_cart();
-		foreach ($_SESSION['cart']['items'] as $items) {
-			echo $items['name']." ".$items['quantity'];
-		}
+	$cart = get_cart();
+	foreach ($cart['items'] as $items) {
+		echo $items['name']." ".$items['quantity'];
+		echo "Pay".$cart['sum'];
+	}
 
 	?>
-
-
 	<div>
-	К оплате <?php echo $_SESSION['cart']['sum'];?>
-		<form action="" method="POST" enctype="multipart/form-data">
+		<form action="" method="GET" enctype="multipart/form-data">
 		<?php
 			if (isset($errors['product'])) {
 				echo $errors['product'];
 			}
 		?>
-			<select name="product">
-				<option>Выберите товар</option>
-					<option name="samsung">Samsung</option>
-					<option name="xiaomi">Xiaomi</option>
-					<option name="asus">Asus</option>
-			</select>
+<select name="product">
+	<option>Select product</option>
+	<?php foreach ($products as $key=>$product){
+		echo '<option value="'.$key.'" name="'.$product['name'].'">'.$product['name'].' '.$product['price'].' grn</option>';
+	}
+	?>
+</select>
 			<?php
 			if (isset($errors['quantity'])) {
 				echo $errors['quantity'];
 			}
 		?>
-		Количество товара:
+		Quantity product:
 			<input type="text" name="quantity">
 			<input type="submit" name="">
 		</form>
 	</div>
 <?php
-
-
+// echo $products[$GET['product']];
+// var_dump($products[$GET['product']]);
+var_dump(get_cart());
 
 
 

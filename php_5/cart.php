@@ -1,10 +1,8 @@
 <?php 
 session_start();
-$_SESSION['cart'] = [];
-if(!isset($_SESSION['cart'])){
-	$_SESSION['cart']=['sum'=>0, 'items'=>[]];
-}
-$_SESSION['cart'] = $products;
+	if(!isset($_SESSION['cart'])){
+		$_SESSION['cart']=['sum'=>0, 'items'=>[]];
+	}	
 	$products = [
 					2=>[
 						'name'=>'Samsung', 
@@ -20,14 +18,14 @@ $_SESSION['cart'] = $products;
 					],
 	];
 $errors = [];
-if(!empty($_POST)){
-	if (isset($_POST['product']) && $_POST['product']!=0){
-		$product = $_POST['product'];
+if(!empty($_GET)){
+	if (isset($_GET['product']) && $_GET['product']!=0){
+		$product = $_GET['product'];
 	}else {
 		$errors['product'] = 'Enter product <br/>';
 	}
-	if (isset($_POST['quantity']) && $_POST['quantity']!=0){
-		$quantity = $_POST['quantity'];
+	if (isset($_GET['quantity']) && $_GET['quantity']!=0){
+		$quantity = $_GET['quantity'];
 	}else {
 		$errors['quantity'] = 'Enter quantity <br/>';
 	}
@@ -39,22 +37,21 @@ if(!empty($_POST)){
 	<title></title>
 </head>
 <body>
-	<?php
-
-var_dump($_POST['product']);
-
+<?php
 	function get_cart(){
 		if(empty($errors)){
-				$product = $products[$product];
-				$_SESSION['cart']['sum'] += $products[$product]['price']*$quantity;
-				$_SESSION['cart']['items'][] = ['name'=>$product['name'], 'quantity'=>$quantity];
-
+			var_dump("<pre>",$products);// NULL
+			foreach ($products as $key => $prod) {
+				if ($key == $_GET['product']){
+					$_SESSION['cart']['sum'] += $prod['price']*$quantity;
+					$_SESSION['cart']['items'][] = ['name'=>$prod['name'], 'quantity'=>$quantity];
+				}
+			}
 		}
 		return $_SESSION['cart'];
 	}
-
-	var_dump("<pre>",$_POST);
-	?>
+	var_dump("<pre>",$_GET);
+?>
 
 
 
