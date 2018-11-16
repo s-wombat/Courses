@@ -3,20 +3,23 @@ session_start();
 	if(!isset($_SESSION['cart'])){
 		$_SESSION['cart']=['sum'=>0, 'items'=>[]];
 	}	
-	$products = [
-					2=>[
-						'name'=>'Samsung', 
-						'price'=>233,
-					],
-					7=>[
-						'name'=>'Xiaomi', 
-						'price'=>333,
-					],
-					43=>[
-						'name'=>'Asus', 
-						'price'=>332,
-					],
-	];
+function getProducts(){
+ return [
+		2=>[
+			'name'=>'Samsung', 
+			'price'=>2,
+		],
+		7=>[
+			'name'=>'Xiaomi', 
+			'price'=>3,
+		],
+		43=>[
+			'name'=>'Asus', 
+			'price'=>4,
+		],
+];
+}
+
 $errors = [];
 if(!empty($_GET)){
 	if (isset($_GET['product']) && $_GET['product']!=0){
@@ -38,25 +41,42 @@ if(!empty($_GET)){
 </head>
 <body>
 <?php
-	function get_cart(){
-		if(empty($errors)){
-			var_dump("<pre>",$products);// NULL
-			foreach ($products as $key => $prod) {
-				if ($key == $_GET['product']){
-					$_SESSION['cart']['sum'] += $prod['price']*$quantity;
-					$_SESSION['cart']['items'][] = ['name'=>$prod['name'], 'quantity'=>$quantity];
-				}
-			}
+function getCart(){
+	$products = getProducts();
+	if(empty($errors)){
+	$id = $_GET['product'];
+	$quantity = $_GET['quantity'];
+		$product = $products[$id];
+		if($key == $_GET['product']){
+			$quantity += $_SESSION['cart']['items'][$id]['quantity'];
 		}
+		$_SESSION['cart']['items'][$id] = ['name'=>$product['name'],'quantity'=>$quantity,'price'=>$product['price']];
+}
 		return $_SESSION['cart'];
+}
+
+	function  cartRecalc(){
+		$sum = 0;
+		$products = getProducts();
+		$items = $_SESSION['cart']['items'];
+		foreach ($items as $key => $value) {
+			$sum += $products[$key]['price']*$items[$key]['quantity'];
+		}
+		if($sum>100){
+			$sum *= 0.9;
+		}
+		return $_SESSION['cart']['sum'] = $sum;
 	}
-	var_dump("<pre>",$_GET);
+
+	function delete(){
+		$cart = $_SESSION['cart'];
+		foreach ($cart['items'] as $key=>$items) {
+		unset($_SESSION['cart']['items'][$key]);
+			$id = $_SESSION['cart']['items'][$key];
+	}	
+}
+
 ?>
-
-
-
-
-
 
 </body>
 </html>
