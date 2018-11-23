@@ -1,8 +1,5 @@
 <?php 
 session_start();
-	if(!isset($_SESSION['cart'])){
-		$_SESSION['cart']=['sum'=>0, 'items'=>[]];
-	}	
 function getProducts(){
  return [
 		2=>[
@@ -20,45 +17,63 @@ function getProducts(){
 ];
 }
 
+function errors(){
 $errors = [];
 if(!empty($_GET)){
 	if (isset($_GET['product']) && $_GET['product']!=0){
-		$product = $_GET['product'];
+		$id = $_GET['product'];
 	}else {
-		$errors['product'] = 'Enter product <br/>';
+		echo 'Выберите товар<br />';
 	}
 	if (isset($_GET['quantity']) && $_GET['quantity']!=0){
 		$quantity = $_GET['quantity'];
 	}else {
-		$errors['quantity'] = 'Enter quantity <br/>';
+		echo 'Введите количество товара';
 	}
 }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<?php
-function getCart(){
-	$products = getProducts();
-	if(empty($errors)){
-	$id = $_GET['product'];
-	$quantity = $_GET['quantity'];
-		$product = $products[$id];
-		if($key == $_GET['product']){
-			$quantity += $_SESSION['cart']['items'][$id]['quantity'];
-		}
-		$_SESSION['cart']['items'][$id] = ['name'=>$product['name'],'quantity'=>$quantity,'price'=>$product['price']];
-}
-		return $_SESSION['cart'];
 }
 
-	function  cartRecalc(){
-		$sum = 0;
-		$products = getProducts();
-		$items = $_SESSION['cart']['items'];
+function getCart(){
+	if(!isset($_SESSION['cart'])){
+		$_SESSION['cart']=['sum'=>0,'items'=>[]];
+	}
+}
+
+
+function add($arr, $id, $quantity, $price){
+	$products = getProducts();
+	$arr = $_SESSION['cart'];
+	// errors();
+	// if(isset($id) && isset($quantity)){
+		getCart();
+		if(empty($arr[$items])){
+			$arr['items'][] = ['id'=>$id,'quantity'=>$quantity,'price'=>$price*$quantity];
+		}else {
+			foreach ($arr['items'] as $key => $value) {
+				if($key == $id){
+					
+					$arr['items'][$key]['quantity'] += $quantity;
+					$arr['items'][$key]['price'] *= $arr['items'][$key]['quantity'];
+				}else {
+					$arr['items'][] = ['id'=>$id,'quantity'=>$quantity,'price'=>$price*$quantity];
+				}
+			}
+		}
+	// }
+cartRecalc();
+	// if(isset($id) && isset($quantity)){
+	// 	$cart['sum'] = 	0;
+	// 	$cart['items'][] = $_GET['product'];
+	// 	$cart['quantity'] = $_GET['quantity'];
+	// }
+	return $_SESSION['cart'] = $arr;
+	 // $arr;
+}
+
+function  cartRecalc(){
+	$sum = 0;
+	$products = getProducts();
+	$items = $_SESSION['cart']['items'];
 		foreach ($items as $key => $value) {
 			$sum += $products[$key]['price']*$items[$key]['quantity'];
 		}
@@ -66,18 +81,17 @@ function getCart(){
 			$sum *= 0.9;
 		}
 		return $_SESSION['cart']['sum'] = $sum;
-	}
 
-	function delete(){
-		$cart = $_SESSION['cart'];
-		foreach ($cart['items'] as $key=>$items) {
-		unset($_SESSION['cart']['items'][$key]);
-			$id = $_SESSION['cart']['items'][$key];
-	}	
 }
 
-?>
-
-</body>
-</html>
-
+function delete($arr, $id){
+		$arr = $_SESSION['cart'];
+		foreach ($arr['items'] as $key=>$items) {
+			if($key == $id){
+				unset($arr['items'][$key]);
+			}
+			
+	}	
+	cartRecalc();
+	return $_SESSION['cart'] = $arr;	
+}

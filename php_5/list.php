@@ -1,14 +1,16 @@
 <?php 
  session_start();
 require 'cart.php';
+// echo "Pay ".$cart['sum']."<br/>";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 	<meta charset="UTF-8">
 	<title>list.php</title>
 </head>
 <body>
+<pre>
 <table border="1" cellspacing="0">
 	<tr>
 		<th>Товар</th>
@@ -16,13 +18,18 @@ require 'cart.php';
 		<th>Сумма</th>
 		<th>Удалить</th>
 	</tr>
-	<?php 
-		$cart = getCart();
-		cartRecalc();
-		foreach ($cart['items'] as $key=>$items) {
-			echo '<tr><td>'.$items['name'].'</td><td>'.$items['quantity'].'</td><td>'.$items['price'].'</td><td><a href=/delete.php?id='.$key.'>Delete</a></td></tr>';
-		}
-	?>
+<?php 
+$cart = $_SESSION['cart'];
+// $cart = add();
+// 
+// $products = getProducts();
+
+// cartRecalc();
+foreach ($cart['items'] as $key=>$items) {
+	echo '<tr><td>'.$items['name'].'</td><td>'.$items['quantity'].'</td><td>'.$items['price'].'</td><td><a href=/delete.php?id='.$key.'>Удалить</a></td></tr>';
+}
+var_dump($cart);
+?>
 </table>
 
 <?php
