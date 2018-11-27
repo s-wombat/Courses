@@ -1,7 +1,6 @@
 <?php 
  session_start();
 require 'cart.php';
-// echo "Pay ".$cart['sum']."<br/>";
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -11,6 +10,7 @@ require 'cart.php';
 </head>
 <body>
 <pre>
+<hr><a href="add.php">Выбор товаров</a><hr>
 <table border="1" cellspacing="0">
 	<tr>
 		<th>Товар</th>
@@ -19,28 +19,25 @@ require 'cart.php';
 		<th>Удалить</th>
 	</tr>
 <?php 
-$cart = $_SESSION['cart'];
-// $cart = add();
-// 
-// $products = getProducts();
-
-// cartRecalc();
-foreach ($cart['items'] as $key=>$items) {
-	echo '<tr><td>'.$items['name'].'</td><td>'.$items['quantity'].'</td><td>'.$items['price'].'</td><td><a href=/delete.php?id='.$key.'>Удалить</a></td></tr>';
+$cart = new Cart();
+if(!empty($cart->getItems())){
+	foreach ($cart->getItems() as $key=>$items) {
+		echo '<tr><td>'.$items['name'].'</td><td>'.$items['count'].'</td><td>'.$items['price'].'</td><td><a href=/delete.php?id='.$key.'>Удалить</a></td></tr>';
+	}
+}else {
+	echo "<b style=\"color:red;\">Корзина пустая</b><br><br>";
 }
-var_dump($cart);
 ?>
 </table>
 
 <?php
-$calc = $_SESSION['cart'];
-echo "<p>К оплате с учетом скидки: ".$calc['sum']."</p>";
+if($cart->getDiscount() > 0){
+		echo "<p>К оплате с учетом скидки: ".$cart->getDiscount()."</p><hr>";
+	}else {
+		echo "<p>К оплате: ".$cart->getSum()."</p><hr>";
+	}
+var_dump($cart);
 ?>
-
-
-
-
-
 
 </body>
 </html>

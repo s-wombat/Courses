@@ -24,13 +24,14 @@ $cart = new Cart();
 </style>
 	<pre>
 		<div>
+		<a href="list.php">Корзина</a><hr>
 			<form action="" method="GET" enctype="multipart/form-data">
 				<p class="errors">
-					<?php $cart->errors(); ?>
+					 <?php echo $cart->errors($_GET['product'], $_GET['count']); ?>
 				</p>
 
 				<select name="product">
-					<option>Выбор товара</option>
+					<option></option>
 					<?php 
 					$products = $cart->getProducts();
 
@@ -46,16 +47,17 @@ $cart = new Cart();
 				<input type="submit" value="submit">
 			</form>
 		</div>
-		<?php
-		if(!empty($_GET['product']) && $_GET['count'] > 0) {
-		
-		$cart->add($_GET['product'], $_GET['count']);
-		
-	}
+<?php
+if(!empty($_GET['product']) && $_GET['count'] > 0) {
+	$cart->add($_GET['product'], $_GET['count']);
+}
+
 var_dump($_SESSION['cart']);
+var_dump($_SESSION['cart']['sum']);
+var_dump($_SESSION['cart']['items']);
 var_dump($_GET['product']);
 
-		?>
+?>
 
 	</body>
 	</html>
