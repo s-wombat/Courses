@@ -1,42 +1,37 @@
 <?php 
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 require_once 'user.php';
+
 $user = new User($users, $_POST);
+
 if ($_POST) {
 	if($user->validate()){
-		echo "ok";
-		$user->searchUser();
+		if(!$user->auth($_POST['email'], $_POST['password'])){
+			echo "неправильный пароль или Email";
+		}
 	}else {
-		echo "Заполните все поля формы";
+		echo "Заполните все поля формы<br>";
 	}
-	$user->logout();
+	$user->logout($_POST['log']);
 }
-
+if($user->maybe()){
+	echo "Привет, ".$user->getName()." ";
 ?>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-	<meta charset="UTF-8">
-	<title>index</title>
-</head>
-<body>
+<form method="POST">
+	<input type="submit" name="log" value="Выйти">
+</form>
+<?php
+}else{
+?>
 	<pre>
-		<form method="POST" action="user.php">
-		    Email: <input type="email" name="email" /><br/><br/>
-		    Password: <input type="password" name="password" /><br/><br/>
+		<form method="POST">
+		    <input type="email" name="email" placeholder="Enter your Email" /><br/><br/>
+		    <input type="password" name="password" placeholder="Enter your Password" /><br/><br/>
 		    <input type="submit"/>
 		</form>
-		<form method="POST">
-       		<input type="submit" name="log" value="Выйти">
-       	</form>
-
 <?php
-var_dump($user->searchUser());
-
-// var_dump($user->users);
+}
 var_dump($_SESSION['id']);
-echo $_POST['email'];
+var_dump($_SESSION['authoris']);
 ?>
-
-</body>
-</html>
