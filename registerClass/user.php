@@ -10,12 +10,10 @@ class User
  {
  	private $email, $password;
  	private $users, $id, $name, $surname, $emailUsers, $passUsers;
-
  	public function __construct($users, $data)
  	{
  		$this->email = isset($data['email']) ? $data['email'] : null;
  		$this->password = isset($data['password']) ? $data['password'] : null;
-
  		foreach ($users as $key => $value) {
  			if($this->email == $value['email'] && $this->password == $value['password']){
 	 			$this->id = $value['id'];
@@ -30,7 +28,6 @@ class User
 	{
     	return !empty($this->email) && !empty($this->password);
 	}
-
 	public function maybe() 
 	{
 	        if (isset($_SESSION["authoris"])) {
@@ -59,7 +56,6 @@ class User
 			return $_SESSION['name']." ".$_SESSION['surname'];
 		}
 	}
-
 	public function logout($remove)
 	{
         if(isset($remove)){
@@ -67,8 +63,4 @@ class User
         }
     }
 		
-
 }
-
-// По умолчанию сессия длится, пока пользователь не закроет окно браузера, и тогда она загибается автоматически. Но если вы хотите принудительно завершить сессию, её всегда можно замочить таким образом:	session_destroy(); 
- //ru.html.net/tutorials/php/lesson12.php

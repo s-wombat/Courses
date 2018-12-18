@@ -79,9 +79,6 @@ class User implements UserInterface
          	unset($_SESSION['authoris']);
         }
     }
-    // public function getStatus(){
-    // 	return $this->status;
-    // }
     public function productEdit(){
     	if($_SESSION['status'] == UserInterface::USER){
     		return true;

@@ -35,6 +35,4 @@ if($user->maybe()){
 		</form>
 <?php
 }
-var_dump($_SESSION['id']);
-var_dump($_SESSION['authoris']);
 ?>

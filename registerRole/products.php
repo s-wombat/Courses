@@ -12,42 +12,39 @@ session_start();
 class Product {
 	private $food, $about, $coun, $cost, $products;
 
- 	public function __construct($food, $about, $coun, $cost, $products)
+ 	public function __construct($products, $data)
  	{
- 		$this->food = isset($food) ? $food : null;
- 		$this->about = isset($about) ? $about : null;
- 		$this->coun = isset($coun) ? $coun : null;
- 		$this->cost = isset($cost) ? $cost : null;
+ 		$this->food = isset($data['food']) ? $data['food'] : null;
+ 		$this->about = isset($data['about']) ? $data['about'] : null;
+ 		$this->count = isset($data['count']) ? $data['count'] : null;
+ 		$this->cost = isset($data['cost']) ? $data['cost'] : null;
  		$_SESSION['products'] = $products;
- 		$this->products = $_SESSION['products'];
  	}
- 	public function change(){
- 		foreach ($this->products as $key => $value) {
-			if(isset($this->food)){
-				$value['food'] = $this->food;
-			}
-			if(isset($this->about)){
-				$value['about'] = $this->about;
-			}
-			if(isset($this->count) && $this->count > 0){
-				$value['count'] = $this->count;
-			}
-			if(isset($this->cost) && $this->cost > 0){
-				$value['cost'] = $this->cost;
-			}
-			var_dump($_SESSION['products'][0]['cost']);
- 		}
 
- 		// return $_SESSION['products'];
- 	}
- 	// public function setProd(){
- 	// 	 $this->products = $_SESSION['products'];
- 	// }
- 	public function __destruct()
- 	{
- 		$_SESSION['products'] = $this->products;
- 	}
+ 	public function changeFood(){
+ 		if(isset($this->food)){
+			$_SESSION['products']['food'] = $this->food;
+		}
+	}
+	public function changeAbout(){
+ 		if(isset($this->about)){
+			$_SESSION['products']['about'] = $this->about;
+		}
+	}
+	public function changeCount(){
+ 		if(isset($this->count)){
+			$_SESSION['products']['count'] = $this->count;
+		}
+	}
+	public function changeCost(){
+ 		if(isset($this->cost)){
+			$_SESSION['products']['cost'] = $this->cost;
+		}
+	}
 }
+echo "<pre>";
 var_dump($products)."<br>";
-
-var_dump($_SESSION['products'][0]['cost']);
+echo "<br>";
+var_dump($_SESSION['products']);
+// var_dump($_SESSION['products']);
+// var_dump($_SESSION['products']['count']);

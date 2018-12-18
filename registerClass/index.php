@@ -2,9 +2,7 @@
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 require_once 'user.php';
-
 $user = new User($users, $_POST);
-
 if ($_POST) {
 	if($user->validate()){
 		if(!$user->auth($_POST['email'], $_POST['password'])){
